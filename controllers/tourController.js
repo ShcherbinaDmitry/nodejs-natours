@@ -1,35 +1,25 @@
 const Tour = require('../models/tourModel');
+const APIFeatures = require('../utils/apiFeatures');
 
-// const tours = JSON.parse(
-//   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
-// );
+exports.aliasTopTours = (req, res, next) => {
+  req.query.limit = '5';
+  req.query.sort = '-ratingsAverage,price';
+  req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
 
-// exports.checkID = (req, res, next, val) => {
-//   console.log(`Tour id is: ${val}`);
-//   if (req.params.id * 1 > tours.length) {
-//     return res.status(404).json({
-//       status: 'Fail',
-//       message: 'Invalid ID',
-//     });
-//   }
-//   next();
-// };
-
-// exports.checkBody = (req, res, next) => {
-//   console.log(req.body);
-//   if (!req.body.name || !req.body.price) {
-//     return res.status(400).json({
-//       status: 'Fail',
-//       message: 'Missing name or price',
-//     });
-//   }
-//   next();
-// };
+  next();
+};
 
 exports.getAllTours = async (req, res) => {
   try {
-    const tours = await Tour.find();
+    //Execute a query
+    const features = new APIFeatures(Tour.find(), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
+    const tours = await features.query;
 
+    //Send responce
     res.status(200).json({
       status: 'success',
       results: tours.length,
@@ -68,7 +58,6 @@ exports.createTour = async (req, res) => {
   try {
     // const newTour = new Tour({});
     // newTour.save(); another way to create new Tour
-
     const newTour = await Tour.create(req.body);
 
     res.status(201).json({
@@ -121,3 +110,29 @@ exports.deleteTour = async (req, res) => {
     });
   }
 };
+
+// const tours = JSON.parse(
+//   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
+// );
+
+// exports.checkID = (req, res, next, val) => {
+//   console.log(`Tour id is: ${val}`);
+//   if (req.params.id * 1 > tours.length) {
+//     return res.status(404).json({
+//       status: 'Fail',
+//       message: 'Invalid ID',
+//     });
+//   }
+//   next();
+// };
+
+// exports.checkBody = (req, res, next) => {
+//   console.log(req.body);
+//   if (!req.body.name || !req.body.price) {
+//     return res.status(400).json({
+//       status: 'Fail',
+//       message: 'Missing name or price',
+//     });
+//   }
+//   next();
+// };
