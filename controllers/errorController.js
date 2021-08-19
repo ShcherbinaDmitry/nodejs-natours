@@ -54,11 +54,7 @@ module.exports = (err, req, res, next) => {
   if (process.env.NODE_ENV === 'development') {
     sendErrorDev(err, res);
   } else if (process.env.NODE_ENV === 'production') {
-    //const errorSpread = { ...err };
     let error = JSON.parse(JSON.stringify(err));
-    // console.log(`1 ${err.name}`);
-    // console.log(`2 ${error.name}`);
-    // console.log(`3 ${errorSpread.name}`);
 
     if (error.name === 'CastError') error = handleCastErrorDB(error);
     if (error.code === 11000) error = handleDuplicateFieldsDB(error);
