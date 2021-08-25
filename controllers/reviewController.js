@@ -34,70 +34,29 @@ exports.getReview = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getReviewsByUser = catchAsync(async (req, res, next) => {
-  const reviews = Review.find({ user: req.user.id });
+// exports.getReviewsByUser = catchAsync(async (req, res, next) => {
+//   const reviews = Review.find({ user: req.user.id });
 
-  if (!reviews) {
-    return next(new AppError('No review for this user can be found', 404));
-  }
+//   if (!reviews) {
+//     return next(new AppError('No review for this user can be found', 404));
+//   }
 
-  res.status(200).json({
-    status: 'success',
-    data: {
-      reviews,
-    },
-  });
-});
+//   res.status(200).json({
+//     status: 'success',
+//     data: {
+//       reviews,
+//     },
+//   });
+// });
 
-exports.createReview = catchAsync(async (req, res, next) => {
+exports.setTourUserIds = (req, res, next) => {
   // Allow nested routes
   if (!req.body.tour) req.body.tour = req.params.tourId;
   if (!req.body.user) req.body.user = req.user.id;
 
-  const newReview = await Review.create(req.body);
+  next();
+};
 
-  res.status(201).json({
-    status: 'success',
-    data: {
-      review: newReview,
-    },
-  });
-});
-
-exports.updateReview = catchAsync(async (req, res, next) => {
-  const review = await Review.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-
-  if (!review) {
-    return next(new AppError('No review for this tour can be found', 404));
-  }
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      review,
-    },
-  });
-});
-
-exports.updateMyReview = catchAsync(async (req, res, next) => {
-  const review = await Review.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-
-  if (!review) {
-    return next(new AppError('No review for this tour can be found', 404));
-  }
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      review,
-    },
-  });
-});
-
+exports.createReview = factory.createOne(Review);
+exports.updateReview = factory.updateOne(Review);
 exports.deleteReview = factory.deleteOne(Review);
