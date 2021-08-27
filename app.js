@@ -20,7 +20,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 // 1 Global Middlewares
 // Serving static files
-app.use(express.static(__dirname, 'public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Set security HTTP headers
 app.use(helmet());
@@ -69,6 +69,12 @@ app.use((req, res, next) => {
 });
 
 // 3 Routes
+app.get('/', (req, res) => {
+  res.status(200).render('base', {
+    tour: 'The Forest Hiker',
+    user: 'Jonas',
+  });
+});
 
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
