@@ -29,3 +29,7 @@ exports.getTourInfo = catchAsync(async (req, res, next) => {
     tour,
   });
 });
+
+exports.getLogin = (req, res, next) => {
+  res.status(200).render('login');
+};
