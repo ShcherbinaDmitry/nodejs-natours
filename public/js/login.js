@@ -20,7 +20,7 @@ export const login = async (email, password) => {
       }, 1500);
     }
 
-    console.log(res);
+    //console.log(res);
   } catch (err) {
     showAlert('error', err.response.data.message);
   }

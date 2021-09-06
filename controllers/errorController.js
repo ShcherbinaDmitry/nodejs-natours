@@ -56,7 +56,7 @@ const sendErrorProd = (err, req, res) => {
     }
     // B) Programming or other unknown error: don't leak error details
     // Log error
-    console.error('ERROR', err);
+    //console.error('ERROR', err);
 
     // Send generic message
     return res.status(500).json({
@@ -66,7 +66,7 @@ const sendErrorProd = (err, req, res) => {
   }
   // 2) Rendered website
   if (err.isOperational) {
-    console.log(err);
+    //console.log(err);
     // A Operational, trusted error: send message to client
     return res.status(err.statusCode).render('error', {
       title: 'Something went wrong!',
@@ -75,7 +75,7 @@ const sendErrorProd = (err, req, res) => {
   }
   // B) Programming or other unknown error: don't leak error details
   // Log error
-  console.error('ERROR', err);
+  //console.error('ERROR', err);
 
   // Send generic message
   return res.status(err.statusCode).render('error', {

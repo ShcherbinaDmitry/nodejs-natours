@@ -20,7 +20,6 @@ mongoose
     useFindAndModify: false,
   })
   .then(() => {
-    // eslint-disable-next-line no-console
     console.log('DB connection successful');
   });
 // READ JSON FILE
