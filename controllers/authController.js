@@ -77,7 +77,6 @@ exports.logout = (req, res, next) => {
   //   httpOnly: true,
   // });
   res.status(200).json({ status: 'success' });
-  //res.status(200).redirect('/');
 };
 
 exports.protect = catchAsync(async (req, res, next) => {
